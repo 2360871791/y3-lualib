@@ -98,7 +98,9 @@ function M:core_subscribe(event_name, ...)
     local seq = regist_object_event(self.handle, config.key, function (data)
         ---@diagnostic disable-next-line: invisible
         local lua_params = y3.py_event_sub.convert_py_params(config.key, data)
-        callback(trigger, lua_params)
+        if trigger:is_enable() then
+            callback(trigger, lua_params)
+        end
     end, table.unpack(args))
 
     local unsubscribe = function ()
